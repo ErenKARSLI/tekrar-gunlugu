@@ -3,13 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>Yapılacaklar Listesi</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>Yapılacaklar Listesi</h1>
+  <div class="header">
+    <h1>Yapılacaklar Listesi</h1>
+    <button id="themeToggle">🌓 Tema</button>
+  </div>
 
-  <input type="text" id="gorevInput" placeholder="Yeni görev girin">
-  <button id="ekleButonu">Ekle</button>
+  <div class="input-group">
+    <input type="text" id="gorevInput" placeholder="Yeni görev girin">
+    <button id="ekleButonu">Ekle</button>
+    <button id="temizleButonu">Tümünü Temizle</button>
+  </div>
 
   <ul id="gorevListesi"></ul>
 

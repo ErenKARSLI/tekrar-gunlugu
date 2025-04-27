@@ -1,0 +1,80 @@
+/* Temel stil */
+body {
+    font-family: sans-serif;
+    background: #fafafa;
+    color: #333;
+    margin: 2rem;
+    transition: background 0.3s, color 0.3s;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .input-group {
+    margin: 1rem 0;
+  }
+  
+  input, button {
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  
+  /* “Tamamlandı” sınıfı */
+  .tamamlandi {
+    text-decoration: line-through;
+    color: gray;
+    opacity: 0.7;
+  }
+  
+  /* Dark mode */
+  body.dark-mode {
+    background: #222;
+    color: #eee;
+  }
+  
+  body.dark-mode input,
+  body.dark-mode button {
+    background: #333;
+    color: #eee;
+    border: 1px solid #555;
+  }
+  
+  /* Animasyonlar */
+  li {
+    list-style: none;
+    padding: 0.5rem;
+    margin-bottom: 0.3rem;
+    background: #fff;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  
+  li.fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  li.fade-out {
+    animation: fadeOut 0.3s forwards;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(10px); }
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  

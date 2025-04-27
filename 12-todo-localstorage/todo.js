@@ -1,37 +1,51 @@
-let gorevInput = document.getElementById("gorevInput");
-let ekleButonu = document.getElementById("ekleButonu");
-let gorevListesi = document.getElementById("gorevListesi");
+// Elemanları seç
+const gorevInput    = document.getElementById("gorevInput");
+const ekleButonu    = document.getElementById("ekleButonu");
+const temizleButonu = document.getElementById("temizleButonu");
+const gorevListesi  = document.getElementById("gorevListesi");
+const themeToggle   = document.getElementById("themeToggle");
 
-// Sayfa açıldığında localStorage'dan görevleri yükle
-let gorevler = JSON.parse(localStorage.getItem("gorevler")) || [];
+// Tema tercihini yükle
+const savedTheme = localStorage.getItem("tema") || "light";
+if (savedTheme === "dark") document.body.classList.add("dark-mode");
 
-gorevleriGoster();
-
-// Görev ekleme
-ekleButonu.addEventListener("click", function() {
-  let yeniGorev = gorevInput.value.trim();
-  if (yeniGorev.length > 0) {
-    gorevler.push(yeniGorev);
-    localStorage.setItem("gorevler", JSON.stringify(gorevler));
-    gorevleriGoster();
-    gorevInput.value = "";
-  } else {
-    alert("Lütfen bir görev girin!");
-  }
+// Tema değiştir
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+  const tema = document.body.classList.contains("dark-mode") ? "dark" : "light";
+  localStorage.setItem("tema", tema);
 });
 
-// Görevleri ekranda gösterme
-function gorevleriGoster() {
-  gorevListesi.innerHTML = "";
-  gorevler.forEach(function(gorev, index) {
-    let li = document.createElement("li");
-    li.innerText = gorev;
+// LocalStorage'dan görevleri al (yoksa boş dizi)
+let gorevler = JSON.parse(localStorage.getItem("gorevler")) || [];
 
-    // Silme Butonu
-    let silButonu = document.createElement("button");
+// Görevleri ekranda gösteren fonksiyon
+function gorevleriGoster() {
+  // Listeyi temizle
+  gorevListesi.innerHTML = "";
+
+  gorevler.forEach((gorevObj, index) => {
+    const li = document.createElement("li");
+    li.innerText = gorevObj.text;
+    li.classList.toggle("tamamlandi", gorevObj.done);
+    li.classList.add("fade-in"); // ekleme animasyonu
+
+    // Tamamlandı işareti
+    li.addEventListener("click", () => {
+      gorevObj.done = !gorevObj.done;
+      kaydetveGoster();
+    });
+
+    // Sil butonu
+    const silButonu = document.createElement("button");
     silButonu.innerText = "Sil";
-    silButonu.addEventListener("click", function() {
-      gorevSil(index);
+    silButonu.addEventListener("click", e => {
+      e.stopPropagation();
+      // fade-out animasyonu sonra sil
+      li.classList.add("fade-out");
+      li.addEventListener("animationend", () => {
+        gorevSil(index);
+      });
     });
 
     li.appendChild(silButonu);
@@ -39,9 +53,37 @@ function gorevleriGoster() {
   });
 }
 
-// Görev silme
-function gorevSil(index) {
-  gorevler.splice(index, 1);
+// Depoyu güncelle ve göster
+function kaydetveGoster() {
   localStorage.setItem("gorevler", JSON.stringify(gorevler));
   gorevleriGoster();
 }
+
+// Belirli bir index'teki görevi silen fonksiyon
+function gorevSil(index) {
+  gorevler.splice(index, 1);
+  kaydetveGoster();
+}
+
+// Ekle butonuna tıklanınca yeni görev ekle
+ekleButonu.addEventListener("click", () => {
+  const text = gorevInput.value.trim();
+  if (text.length > 0) {
+    gorevler.push({ text, done: false });
+    kaydetveGoster();
+    gorevInput.value = "";
+  } else {
+    alert("Lütfen bir görev girin!");
+  }
+});
+
+// Tümünü Temizle butonuna tıklanınca
+temizleButonu.addEventListener("click", () => {
+  if (confirm("Tüm görevleri silmek istediğine emin misin?")) {
+    gorevler = [];
+    kaydetveGoster();
+  }
+});
+
+// Sayfa yüklendiğinde mevcut görevleri ekrana bas
+window.addEventListener("load", gorevleriGoster);
