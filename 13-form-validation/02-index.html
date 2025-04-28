@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Form Validation</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    form { max-width: 400px; margin: auto; }
+    input, button { display: block; width: 100%; padding: .5rem; margin: .5rem 0; }
+    .error { color: #c00; font-size: .9rem; }
+    .success { color: #080; font-size: 1rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+
+  <h1>Kayıt Formu</h1>
+
+  <form id="kullaniciFormu" novalidate>
+    <label>
+      İsim:
+      <input type="text" id="isim" placeholder="İsim" required minlength="3">
+      <div class="error" id="isimError"></div>
+    </label>
+
+    <label>
+      E-posta:
+      <input type="email" id="email" placeholder="E-posta" required>
+      <div class="error" id="emailError"></div>
+    </label>
+
+    <label>
+      Şifre:
+      <input type="password" id="sifre" placeholder="Şifre" required minlength="6">
+      <div class="error" id="sifreError"></div>
+    </label>
+
+    <button type="submit">Gönder</button>
+  </form>
+
+  <div id="formSuccess" class="success"></div>
+
+  <script src="02-form.js"></script>
+</body>
+</html>
